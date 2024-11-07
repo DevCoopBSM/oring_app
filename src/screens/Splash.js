@@ -16,7 +16,7 @@ const Splash = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../assets/1.png')} // 스플래시 이미지 경로를 수정하세요
+        source={require('../assets/logo.png')} // 스플래시 이미지 경로를 수정하세요
         style={styles.logo}
         resizeMode="contain"
       />
