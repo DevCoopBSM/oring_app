@@ -2,7 +2,8 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Splash from './src/screens/Splash';
-import Main from './src/screens/Main'; // Main 화면도 생성해야 합니다
+import Main from './src/screens/Main';
+import Home from './src/screens/Home';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ const App = () => {
         }}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Main" component={Main} />
+        <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
   );
