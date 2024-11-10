@@ -5,9 +5,8 @@ const {width, height} = Dimensions.get('window');
 
 const Splash = ({navigation}) => {
   useEffect(() => {
-    // 3초 후 메인 화면으로 이동
     const timer = setTimeout(() => {
-      navigation.replace('Main'); // 'Main'은 메인 화면의 라우트 이름입니다
+      navigation.replace('Main');
     }, 3000);
 
     return () => clearTimeout(timer);
@@ -16,7 +15,7 @@ const Splash = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../assets/logo.png')} // 스플래시 이미지 경로를 수정하세요
+        source={require('../assets/logo.png')}
         style={styles.logo}
         resizeMode="contain"
       />
