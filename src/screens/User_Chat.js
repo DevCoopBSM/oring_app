@@ -32,7 +32,16 @@ const ChatPage = () => {
     setIsOpen(!isOpen);
   };
 
-  const Refresh = () => {};
+  const Refresh = () => {
+    setMessages([
+      {
+        isUser: false,
+        profilePic: happyoring,
+        nickname: '공간 AriSori',
+        text: `안녕하세요 매점 아리소리입니다! 문의 확인은 매점부원들이 휴대폰을 공식적으로 되찾는 오후 4시 반 이후부터 가능합니다.`,
+      },
+    ]);
+  };
 
   const handleSendMessage = () => {
     if (inputValue.trim()) {
@@ -150,6 +159,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#fff',
   },
+  icon: {width: 24, height: 24},
   arrow: {width: 24, height: 24},
   plus: {width: 24, height: 24},
   overlay: {
@@ -159,6 +169,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    zIndex: 10,
   },
   sidebar: {
     position: 'absolute',
@@ -168,6 +179,7 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#fff',
     padding: 16,
+    zIndex: 11,
   },
   newChatBtn: {
     padding: 12,
@@ -176,34 +188,46 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   newChatBtnText: {color: '#fff', fontSize: 16},
+  listBox: {flex: 1, marginTop: 16},
+  dateText: {fontSize: 14, color: '#555', marginTop: 10},
+  messageBox: {
+    padding: 10,
+    marginVertical: 5,
+    backgroundColor: '#f1f1f1',
+    borderRadius: 10,
+  },
+  listText: {color: '#000'},
+
   chatContainer: {flex: 1, padding: 16},
-  messageContainer: {marginVertical: 8, padding: 10, borderRadius: 10},
-  userMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#F49E15',
+  messageContainer: {
+    marginVertical: 8,
+    padding: 10,
+    borderRadius: 10,
   },
-  userMessageText: {
-    color: '#fff',
-  },
+  userMessage: {alignSelf: 'flex-end', backgroundColor: '#f49e15'},
   otherMessage: {alignSelf: 'flex-start', backgroundColor: '#fff'},
+  userText: {color: '#fff'},
   message: {color: '#000'},
+
+  profile: {flexDirection: 'row', alignItems: 'center', marginBottom: 5},
+  profilePic: {width: 30, height: 30, borderRadius: 15},
+  nickname: {marginLeft: 8, fontWeight: 'bold'},
+
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
     backgroundColor: '#fff',
   },
-  input: {
+  inputWrapper: {
     flex: 1,
-    borderRadius: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#f1f1f1',
-    padding: 10,
-    paddingRight: 40,
+    borderRadius: 20,
+    paddingHorizontal: 10,
   },
-  icon: {width: 24, height: 24, marginHorizontal: 8},
-  profile: {flexDirection: 'row', alignItems: 'center', marginBottom: 5},
-  profilePic: {width: 30, height: 30, borderRadius: 15},
-  nickname: {marginLeft: 8, fontWeight: 'bold'},
+  input: {flex: 1, padding: 8},
 });
 
 export default ChatPage;
