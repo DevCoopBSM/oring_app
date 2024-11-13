@@ -8,10 +8,10 @@ import {
   StyleSheet,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import oringE from '../assets/logoE.png'; // Assuming PNG format for mobile
-import logo from '../assets/logo.png';
-import mail from '../assets/mail.png';
-import password_img from '../assets/password.png';
+import oringE from './assets/logoE.png';
+import logo from './assets/logo.png';
+import mail from './assets/mail.png';
+import password_img from './assets/password.png';
 
 const Index = () => {
   const navigation = useNavigation();
@@ -21,7 +21,7 @@ const Index = () => {
   const isFormFilled = email !== '' && password !== '';
 
   const onClick = () => {
-    if (isFormFilled) navigation.navigate('Item_List');
+    if (isFormFilled) navigation.navigate('User_Chat');
   };
 
   return (

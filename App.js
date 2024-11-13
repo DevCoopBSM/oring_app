@@ -4,6 +4,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Splash from './src/screens/Splash';
 import Main from './src/screens/Main';
 import Item_List from './src/screens/Items_List';
+import User_Chat from './src/screens/User_Chat';
+import Manager_Chat from './src/screens/Manager_Chat';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +20,8 @@ const App = () => {
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="Item_List" component={Item_List} />
+        <Stack.Screen name="User_Chat" component={User_Chat} />
+        <Stack.Screen name="Manager_Chat" component={Manager_Chat} />
       </Stack.Navigator>
     </NavigationContainer>
   );
