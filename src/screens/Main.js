@@ -21,7 +21,7 @@ const Index = () => {
   const isFormFilled = email !== '' && password !== '';
 
   const onClick = () => {
-    if (isFormFilled) navigation.navigate('Alarm');
+    if (isFormFilled) navigation.navigate('Charge');
   };
 
   return (
