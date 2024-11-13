@@ -204,6 +204,9 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
   },
+  userMessageText: {
+    color: '#fff',
+  },
   userMessage: {alignSelf: 'flex-end', backgroundColor: '#f49e15'},
   otherMessage: {alignSelf: 'flex-start', backgroundColor: '#fff'},
   userText: {color: '#fff'},
