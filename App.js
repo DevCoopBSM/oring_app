@@ -8,6 +8,7 @@ import User_Chat from './src/screens/User_Chat';
 import Manager_Chat from './src/screens/Manager_Chat';
 import Alarm from './src/screens/Alarm';
 import Charge from './src/screens/Charge';
+import Mypage from './src/screens/Mypage';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ const App = () => {
         <Stack.Screen name="Manager_Chat" component={Manager_Chat} />
         <Stack.Screen name="Alarm" component={Alarm} />
         <Stack.Screen name="Charge" component={Charge} />
+        <Stack.Screen name="Mypage" component={Mypage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
