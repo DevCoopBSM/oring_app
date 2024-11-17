@@ -21,7 +21,7 @@ const Index = () => {
   const isFormFilled = email !== '' && password !== '';
 
   const onClick = () => {
-    if (isFormFilled) navigation.navigate('Home');
+    if (isFormFilled) navigation.navigate('Item_Insert');
   };
 
   return (
