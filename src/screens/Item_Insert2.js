@@ -43,10 +43,10 @@ const Index = () => {
       <Text style={styles.title}>재고 추가</Text>
       <View style={styles.header}>
         <View style={styles.head}>
-          <Text style={styles.headText}>기준 제고 입고</Text>
+          <Text style={styles.headText}>기준 재고 입고</Text>
         </View>
         <TouchableOpacity style={styles.head2} onPress={onInsert}>
-          <Text style={styles.head2Text}>변동 제고 입고</Text>
+          <Text style={styles.head2Text}>변동 재고 입고</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.contain}>
@@ -78,7 +78,7 @@ const Index = () => {
         </View>
         <TextInput
           style={styles.input}
-          placeholder="부가사항을 입력해주세요."
+          placeholder="부가사항을 입력해주세요. ( ex 맛, 용량 등 )"
         />
 
         {/* 바코드 입력 */}
