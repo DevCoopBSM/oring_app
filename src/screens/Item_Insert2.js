@@ -10,10 +10,15 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import up from './assets/up.png';
 import down from './assets/down.png';
+import { addSnapshotItem } from '../services/addItemAuth2';
 
 const Index = () => {
   const navigation = useNavigation();
   const [count, setCount] = useState(''); // 상품 개수 초기 상태
+  const [company, setCompany] = useState('');
+  const [productName, setProductName] = useState('');
+  const [explain, setExplain] = useState('');
+  const [barcode, setBarcode] = useState('');
 
   const onInsert = () => {
     navigation.navigate('Item_Insert');
@@ -38,6 +43,44 @@ const Index = () => {
     }
   };
 
+  const handleSave = async () => {
+    try {
+      if (!company || !productName || !barcode || !count) {
+        alert('필수 항목을 모두 입력해주세요.');
+        return;
+      }
+
+      console.log('Attempting to save item with data:', {
+        company,
+        productName,
+        explain,
+        barcode,
+        quantity: count
+      });
+
+      const response = await addSnapshotItem({
+        company,
+        productName,
+        explain,
+        barcode,
+        quantity: count
+      });
+
+      console.log('Save successful:', response);
+      alert(response.results[0].message);
+      
+      // 입력 필드 초기화
+      setCompany('');
+      setProductName('');
+      setExplain('');
+      setBarcode('');
+      setCount('');
+    } catch (error) {
+      console.error('Save failed:', error);
+      alert(error.message);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>재고 추가</Text>
@@ -59,6 +102,8 @@ const Index = () => {
         <TextInput
           style={styles.input}
           placeholder="새로운 상품의 회사 이름을 입력해주세요."
+          value={company}
+          onChangeText={setCompany}
         />
 
         {/* 상품명 입력 */}
@@ -70,6 +115,8 @@ const Index = () => {
         <TextInput
           style={styles.input}
           placeholder="상품의 이름을 입력해주세요."
+          value={productName}
+          onChangeText={setProductName}
         />
 
         {/* 부가 사항 */}
@@ -79,6 +126,8 @@ const Index = () => {
         <TextInput
           style={styles.input}
           placeholder="부가사항을 입력해주세요. ( ex 맛, 용량 등 )"
+          value={explain}
+          onChangeText={setExplain}
         />
 
         {/* 바코드 입력 */}
@@ -90,6 +139,8 @@ const Index = () => {
         <TextInput
           style={styles.input}
           placeholder="터치 시 카메라로 전환됩니다."
+          value={barcode}
+          onChangeText={setBarcode}
         />
 
         {/* 상품 개수 입력 */}
@@ -104,7 +155,7 @@ const Index = () => {
             value={count === '' ? '' : String(count)}
             onChangeText={handleChange}
             keyboardType="numeric"
-            placeholder="재고 갯수를 입력해주세요." // 초반 placeholder
+            placeholder="재고 갯수를 입력해주세요."
           />
           <TouchableOpacity onPress={handleIncrease}>
             <Image source={up} style={styles.icon} />
@@ -115,7 +166,7 @@ const Index = () => {
         </View>
 
         {/* 저장 버튼 */}
-        <TouchableOpacity style={styles.saveBtn}>
+        <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
           <Text style={styles.saveBtnText}>저장하기</Text>
         </TouchableOpacity>
 

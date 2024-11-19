@@ -39,13 +39,12 @@ const Index = () => {
       }
 
       console.log('Attempting login with:', { email, password: '***' });
-      g
       const response = await login(email, password);
       console.log('Login response received:', response);
       
       if (response.success) {
         console.log('Login successful:', response);
-        navigation.navigate('Home'); // 페이지 이동
+        navigation.navigate('Item_Insert2'); // 페이지 이동
       } else {
         Alert.alert('로그인 실패', '이메일 또는 비밀번호를 확인해주세요.');
       }
