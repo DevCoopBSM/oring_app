@@ -70,10 +70,10 @@ const Index = ({barcode}) => {
       <Text style={styles.title}>재고 추가</Text>
       <View style={styles.header}>
         <TouchableOpacity style={styles.inactiveTab} onPress={onInsert}>
-          <Text style={styles.inactiveTabText}>기준 제고 입고</Text>
+          <Text style={styles.inactiveTabText}>기준 재고 입고</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.activeTab}>
-          <Text style={styles.activeTabText}>변동 제고 입고</Text>
+          <Text style={styles.activeTabText}>변동 재고 입고</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.formContainer}>

@@ -39,7 +39,7 @@ const Index = () => {
       }
 
       console.log('Attempting login with:', { email, password: '***' });
-      
+      g
       const response = await login(email, password);
       console.log('Login response received:', response);
       
