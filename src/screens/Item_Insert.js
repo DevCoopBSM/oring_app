@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
+import { addInventoryItem } from '../services/addItemAuth';
 
 const Index = ({barcode}) => {
   const navigation = useNavigation();
@@ -19,23 +19,26 @@ const Index = ({barcode}) => {
   const [quantity, setQuantity] = useState('');
   const [reasonText, setreasonText] = useState('');
 
-  const handleSave = () => {
-    axios({
-      method: 'POST',
-      url: 'https://oring.bsm-aripay.kr/api/inventory/inventory',
-      results: {
+  const handleSave = async () => {
+    try {
+      const response = await addInventoryItem({
         itemCode: barcodeInput,
         itemName: productName,
         itemQuantity: quantity,
-        reason: reasonText,
-      },
-    })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(error => {
-        console.error(error);
+        reason: reasonText
       });
+      
+      console.log('Success:', response);
+      alert(response.results[0].message);
+      
+      setProductName('');
+      setBarcodeInput('');
+      setQuantity('');
+      setreasonText('');
+    } catch (error) {
+      console.error('Error:', error);
+      alert(error.message);
+    }
   };
 
   const onInsert = () => {

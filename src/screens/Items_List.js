@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,38 +6,57 @@ import {
   Image,
   StyleSheet,
   ScrollView,
+  Alert,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import picnic_red from './assets/items/picnic_red.jpg';
-import picnic_green from './assets/items/picnic_green.jpg';
-import meat from './assets/items/meat.jpg';
-import kimchi from './assets/items/kimchi.jpg';
-import worldcon_red from './assets/items/worldcon_red.png';
-import worldcon_blue from './assets/items/worldcon_blue.png';
-import alloa from './assets/items/alloa.jpg';
-import con from './assets/items/99con.jpg';
-import supercon_red from './assets/items/supercon_red.jpg';
+import { useNavigation } from '@react-navigation/native';
+import { getAllItems, getCategoryItems } from '../services/itemAuth';
+import defaultImage from './assets/items/picnic_red.jpg';
 
 const Index = () => {
   const navigation = useNavigation();
   const menuItems = ['전체', '과자', '음료', '아이스크림', '생필품'];
   const [selectedCategory, setSelectedCategory] = useState('전체');
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const onDetail = () => {
-    navigation.navigate('Detail');
+  // 상품 목록 불러오기
+  const fetchItems = async (category) => {
+    setLoading(true);
+    try {
+      const response = category === '전체' 
+        ? await getAllItems()
+        : await getCategoryItems(category);
+      
+      if (response && response.itemList) {
+        setItems(response.itemList);
+      } else {
+        console.error('Invalid response format:', response);
+        Alert.alert('오류', '데이터 형식이 올바르지 않습니다.');
+      }
+    } catch (error) {
+      console.error('Fetch items error:', error);
+      if (error.message.includes('접근 권한')) {
+        // 'Main' 스택의 'Login' 스크린으로 이동
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Main' }],
+        });
+      } else {
+        Alert.alert('오류', error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const Items = [
-    {name: '매일_피크닛_사과맛', img: picnic_red, price: 700, num: 50},
-    {name: '매일_피크닛_청포도맛', img: picnic_green, price: 700, num: 48},
-    {name: '사조_고기포자만두', img: meat, price: 2000, num: 20},
-    {name: '사조_김치포자만두', img: kimchi, price: 2000, num: 22},
-    {name: '롯데_월드콘_바닐라맛', img: worldcon_red, price: 1400, num: 10},
-    {name: '롯데_월드콘_쿠앤크맛', img: worldcon_blue, price: 1400, num: 13},
-    {name: '웅진_가야농장_알로에', img: alloa, price: 1300, num: 38},
-    {name: '롯데_구구콘_오리지널', img: con, price: 1400, num: 7},
-    {name: '빙그레_슈퍼콘_초코맛', img: supercon_red, price: 1400, num: 15},
-  ];
+  // 카테고리 변경 시 상품 목록 업데이트
+  useEffect(() => {
+    fetchItems(selectedCategory);
+  }, [selectedCategory]);
+
+  const onDetail = (itemId) => {
+    navigation.navigate('Detail', { itemId });
+  };
 
   return (
     <View style={styles.container}>
@@ -59,28 +78,37 @@ const Index = () => {
       </ScrollView>
 
       <ScrollView contentContainerStyle={styles.menuList}>
-        {Items.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.menuBox}
-            onPress={onDetail}>
-            <Image source={item.img} style={styles.menuImg} />
-            <View style={styles.menuContent}>
-              <Text style={styles.menuItem}>{item.name}</Text>
-              <Text style={styles.menuPrice}>
-                가격 : {item.price.toLocaleString()}원 | 수량 : {item.num}개
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+        {loading ? (
+          <Text style={styles.loadingText}>로딩 중...</Text>
+        ) : (
+          items.map((item) => (
+            <TouchableOpacity
+              key={item.itemId}
+              style={styles.menuBox}
+              onPress={() => onDetail(item.itemId)}>
+              <Image 
+                source={
+                  item.itemImage 
+                    ? { uri: `data:image/jpeg;base64,${item.itemImage}` }
+                    : defaultImage
+                } 
+                style={styles.menuImg} 
+              />
+              <View style={styles.menuContent}>
+                <Text style={styles.menuItem}>{item.itemName}</Text>
+                <Text style={styles.menuPrice}>
+                  가격 : {item.itemPrice.toLocaleString()}원 | 수량 : {item.itemQuantity}개
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))
+        )}
       </ScrollView>
     </View>
   );
 };
 
-export default Index;
-
-// 스타일 정의
+// 기존 스타일에 로딩 텍스트 스타일 추가
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -129,4 +157,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
+  loadingText: {
+    textAlign: 'center',
+    padding: 20,
+    fontSize: 16,
+    color: '#666',
+  },
 });
+
+export default Index;
