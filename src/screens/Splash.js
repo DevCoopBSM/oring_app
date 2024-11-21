@@ -10,8 +10,7 @@ const Splash = ({navigation}) => {
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, []);
-
+  }, [navigation]);
   return (
     <View style={styles.container}>
       <Image
