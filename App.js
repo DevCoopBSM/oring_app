@@ -2,12 +2,13 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Image, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet, Pressable} from 'react-native';
 import homeIcon from './src/screens/assets/home.png';
 import itemIcon from './src/screens/assets/item.png';
 import chatIcon from './src/screens/assets/opinion.png';
 import mypageIcon from './src/screens/assets/mypage.png';
 import logo from './src/screens/assets/header_logo.png';
+import alarm from './src/screens/assets/alarm.png';
 import Splash from './src/screens/Splash';
 import Main from './src/screens/Main';
 import Home from './src/screens/Home';
@@ -86,14 +87,22 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Splash"
-        screenOptions={{
+        screenOptions={({navigation}) => ({
           headerShown: true,
-          headerTitle: () => <Image source={logo} style={styles.logo} />,
-          headerTitleAlign: 'center',
+          headerTitle: () => (
+            <Pressable onPress={() => navigation.navigate('Home')}>
+              <View style={styles.imageContain}>
+                <Image source={logo} style={styles.logo} />
+                <Image source={alarm} style={styles.alarm} />
+              </View>
+            </Pressable>
+          ),
+          headerTitleAlign: 'left',
           headerStyle: {
-            backgroundColor: '#F49E15',
+            backgroundColor: 'white',
           },
-        }}>
+          headerBackVisible: false,
+        })}>
         <Stack.Screen
           name="Splash"
           component={Splash}
@@ -122,9 +131,21 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
+  imageContain: {
+    flexDirection: 'row',
+    gap: 190,
+  },
   logo: {
     width: 120,
     height: 40,
+    marginLeft: 15,
+    resizeMode: 'contain',
+  },
+  alarm: {
+    width: 20,
+    height: 20,
+    marginLeft: 15,
+    marginTop: 13,
     resizeMode: 'contain',
   },
 });
