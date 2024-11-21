@@ -14,7 +14,7 @@ import defaultImage from './assets/items/picnic_red.jpg';
 
 const Index = () => {
   const navigation = useNavigation();
-  const menuItems = ['전체', '과자', '음료', '아이스크림', '기타'];
+  const menuItems = ['전체', '과자', '아이스크림', '음료','냉동식품', '빵류', '식품', '기타'];
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
