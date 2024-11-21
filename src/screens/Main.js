@@ -9,11 +9,11 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import Logo from './assets/logoSVG.svg';
 import oringE from './assets/logoE.png';
-import logo from './assets/logo.png';
 import mail from './assets/mail.png';
 import password_img from './assets/password.png';
-import {login, logout, checkToken} from '../services/Auth';
+import {login, logout, checkToken} from './services/Auth';
 
 const Index = () => {
   const navigation = useNavigation();
@@ -44,7 +44,7 @@ const Index = () => {
 
       if (response.success) {
         console.log('Login successful:', response);
-        navigation.navigate('BottomTab');
+        navigation.navigate('Item_List'); // 페이지 이동
       } else {
         Alert.alert('로그인 실패', '이메일 또는 비밀번호를 확인해주세요.');
       }
@@ -65,7 +65,7 @@ const Index = () => {
       <View style={styles.background} />
       <View style={styles.contain}>
         <View style={styles.logo}>
-          <Image source={logo} style={styles.logoImg} />
+          <Logo width={33} height={33} />
           <Image source={oringE} style={styles.logoText} />
         </View>
         <Text style={styles.welcome}>오링에 온 걸{'\n'}환영해요!</Text>
@@ -132,10 +132,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  logoImg: {
-    width: 33,
-    height: 33,
   },
   logoText: {
     width: 105,

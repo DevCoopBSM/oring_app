@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, Image, Dimensions} from 'react-native';
+import {View, StyleSheet, Dimensions} from 'react-native';
+import Logo from './assets/logoSVG.svg';
 
 const {width, height} = Dimensions.get('window');
 
@@ -11,12 +12,13 @@ const Splash = ({navigation}) => {
 
     return () => clearTimeout(timer);
   }, [navigation]);
+
   return (
     <View style={styles.container}>
-      <Image
-        source={require('./assets/logo.png')}
+      <Logo 
+        width={width * 0.7}
+        height={height * 0.3}
         style={styles.logo}
-        resizeMode="contain"
       />
     </View>
   );
@@ -30,8 +32,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: width * 0.7,
-    height: height * 0.3,
+    // SVG 컴포넌트에 추가 스타일이 필요한 경우 여기에 추가
   },
 });
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import logo from './assets/logo.png';
+import Logo from './assets/logoSVG.svg';
 import setting from './assets/setting.png';
-import conference from './assets/conference.png';
+import conferencse from './assets/conference.png';
 import refund from './assets/refund.png';
 import help from './assets/help.png';
 import arrow from './assets/arrow2.png';
@@ -17,7 +17,7 @@ const Index = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={logo} style={styles.profile} />
+      <Logo width={80} height={100} style={styles.profile} />
       <Text style={styles.userName}>박강은</Text>
       <View style={styles.listBox}>
         <TouchableOpacity style={styles.box}>

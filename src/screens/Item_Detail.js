@@ -62,11 +62,7 @@ const Index = () => {
         <RecommedText>비슷한 다른 메뉴를 추천해드릴게요! 🥰</RecommedText>
         <MenuList horizontal showsHorizontalScrollIndicator={false}>
           {menuItems.map((item, index) => (
-            <Shadow
-              distance={5}
-              startColor={'#00000010'}
-              endColor={'#00000000'}
-              offset={[15, 5]}>
+     
               <MenuBox key={index}>
                 <MenuImg source={item.img} />
                 <MenuItem>{item.name}</MenuItem>
@@ -74,7 +70,7 @@ const Index = () => {
                   {item.price.toLocaleString()}원 | {item.num} 개
                 </MenuPrice>
               </MenuBox>
-            </Shadow>
+ 
           ))}
         </MenuList>
       </RecommendBox>
@@ -112,6 +108,7 @@ const ItemImg = styled.Image`
   width: 250px;
   height: 250px;
   margin-top: 20px;
+  resize-mode: contain;
 `;
 
 const DetailBox = styled.View`
@@ -169,6 +166,8 @@ const RecommedText = styled.Text`
   margin-top: 20px;
   text-align: left;
   padding-left: 20px;
+  font-size: 16px;
+  font-weight: 900;
   font-family: 'NanumSquareEB';
 `;
 
@@ -176,15 +175,21 @@ const MenuList = styled.ScrollView`
   padding-left: 15px;
   margin-top: 15px;
 `;
-
 const MenuBox = styled.View`
   width: 120px;
   height: 160px;
   border-radius: 15px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
   background-color: white;
   margin-right: 10px;
   align-items: center;
+
+  ${Platform.OS === 'ios' && `
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+  `}
+
+  ${Platform.OS === 'android' && `
+    elevation: 5;
+  `}
 `;
 
 const MenuImg = styled.Image`
