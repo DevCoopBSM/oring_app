@@ -90,12 +90,14 @@ const App = () => {
         screenOptions={({navigation}) => ({
           headerShown: true,
           headerTitle: () => (
-            <Pressable onPress={() => navigation.navigate('Home')}>
-              <View style={styles.imageContain}>
+            <View style={styles.imageContain}>
+              <Pressable onPress={() => navigation.navigate('BottomTab')}>
                 <Image source={logo} style={styles.logo} />
+              </Pressable>
+              <Pressable onPress={() => navigation.navigate('Alarm')}>
                 <Image source={alarm} style={styles.alarm} />
-              </View>
-            </Pressable>
+              </Pressable>
+            </View>
           ),
           headerTitleAlign: 'left',
           headerStyle: {

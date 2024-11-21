@@ -38,7 +38,7 @@ const Index = () => {
       if (error.message.includes('접근 권한')) {
         navigation.reset({
           index: 0,
-          routes: [{name: 'Main'}],
+          routes: [{name: 'BottomTab'}],
         });
       } else {
         Alert.alert('오류', error.message);
