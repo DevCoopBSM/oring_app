@@ -29,11 +29,11 @@ const Index = () => {
   ];
 
   const onFix = () => {
-    navigation.navigate('Home');
+    navigation.navigate('Item_Insert');
   };
 
   const onBack = () => {
-    navigation.goBack();
+    navigation.goBack(-1);
   };
 
   return (
@@ -80,44 +80,38 @@ const Index = () => {
 
 export default Index;
 
-// 스타일 정의
 const Container = styled.View`
   flex: 1;
   background-color: white;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 `;
 
 const Icon = styled.View`
-  position: absolute;
-  top: 2rem;
-  left: 20%;
+  margin-top: 20px;
   flex-direction: row;
   justify-content: space-between;
-  width: 100px;
+  gap: 300px;
 `;
 
 const Arrow = styled.Image`
-  width: 24px;
-  height: 24px;
-  margin-right: 20px;
+  width: 30px;
+  height: 30px;
 `;
 
 const Fix = styled.Image`
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
 `;
 
 const ItemImg = styled.Image`
-  width: 100%;
-  height: 40%;
+  width: 250px;
+  height: 250px;
   margin-top: 20px;
   resize-mode: contain;
 `;
 
 const DetailBox = styled.View`
-  width: 100%;
-  height: 30%;
   background-color: white;
 `;
 
@@ -128,7 +122,7 @@ const Contain = styled.View`
 const ItemName = styled.Text`
   font-size: 24px;
   font-family: 'NanumSquareEB';
-  padding-top: 30px;
+  padding-top: 25px;
   text-align: left;
 `;
 
@@ -169,7 +163,7 @@ const RecommendBox = styled.View`
 
 const RecommedText = styled.Text`
   font-size: 14px;
-  margin-bottom: 20px;
+  margin-top: 20px;
   text-align: left;
   padding-left: 20px;
   font-size: 16px;
@@ -179,6 +173,7 @@ const RecommedText = styled.Text`
 
 const MenuList = styled.ScrollView`
   padding-left: 15px;
+  margin-top: 15px;
 `;
 const MenuBox = styled.View`
   width: 120px;

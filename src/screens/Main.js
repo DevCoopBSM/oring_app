@@ -9,11 +9,11 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import oringE from './assets/logoE.png'; // Assuming PNG format for mobile
+import oringE from './assets/logoE.png';
 import logo from './assets/logo.png';
 import mail from './assets/mail.png';
 import password_img from './assets/password.png';
-import { login, logout, checkToken } from '../services/Auth';
+import {login, logout, checkToken} from '../services/Auth';
 
 const Index = () => {
   const navigation = useNavigation();
@@ -25,23 +25,23 @@ const Index = () => {
 
   const onClick = async () => {
     if (!isFormFilled) return;
-    
+
     setLoading(true);
     try {
       if (!email.includes('@')) {
         Alert.alert('입력 오류', '올바른 이메일 형식을 입력해주세요.');
         return;
       }
-      
+
       if (password.length < 4) {
         Alert.alert('입력 오류', '비밀번호는 4자 이상이어야 합니다.');
         return;
       }
 
-      console.log('Attempting login with:', { email, password: '***' });
+      console.log('Attempting login with:', {email, password: '***'});
       const response = await login(email, password);
       console.log('Login response received:', response);
-      
+
       if (response.success) {
         console.log('Login successful:', response);
         navigation.navigate('Item_Detail'); // 페이지 이동
@@ -52,7 +52,8 @@ const Index = () => {
       console.error('Login error:', error);
       Alert.alert(
         '로그인 실패',
-        error.message || '로그인 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.'
+        error.message ||
+          '로그인 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
       );
     } finally {
       setLoading(false);
@@ -99,7 +100,9 @@ const Index = () => {
           ]}
           onPress={onClick}
           disabled={!isFormFilled || loading}>
-          <Text style={styles.loginText}>{loading ? '로딩중...' : '로그인'}</Text>
+          <Text style={styles.loginText}>
+            {loading ? '로딩중...' : '로그인'}
+          </Text>
         </TouchableOpacity>
         <Text style={styles.text}>이메일 찾기 | 비밀번호 찾기 | 회원가입</Text>
       </View>
@@ -171,7 +174,7 @@ const styles = StyleSheet.create({
     height: 40,
     paddingLeft: 32,
     borderWidth: 1,
-    borderColor: '#999999',
+    borderColor: 'black',
     borderRadius: 8,
   },
   password: {
