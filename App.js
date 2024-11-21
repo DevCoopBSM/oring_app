@@ -2,11 +2,12 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Image} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import homeIcon from './src/screens/assets/home.png';
 import itemIcon from './src/screens/assets/item.png';
 import chatIcon from './src/screens/assets/opinion.png';
 import mypageIcon from './src/screens/assets/mypage.png';
+import logo from './src/screens/assets/header_logo.png';
 import Splash from './src/screens/Splash';
 import Main from './src/screens/Main';
 import Home from './src/screens/Home';
@@ -24,7 +25,6 @@ import Item_Insert2 from './src/screens/Item_Insert2';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// BottomTab 네비게이터 정의
 const BottomTab = () => {
   return (
     <Tab.Navigator
@@ -81,23 +81,30 @@ const BottomTab = () => {
   );
 };
 
-// 전체 App 네비게이터
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Splash"
         screenOptions={{
-          headerShown: false,
+          headerShown: true,
+          headerTitle: () => <Image source={logo} style={styles.logo} />,
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#F49E15',
+          },
         }}>
-        {/* Splash 화면 */}
-        <Stack.Screen name="Splash" component={Splash} />
-
-        {/* BottomTab 네비게이터 */}
+        <Stack.Screen
+          name="Splash"
+          component={Splash}
+          options={{headerShown: false}}
+        />
         <Stack.Screen name="BottomTab" component={BottomTab} />
-
-        {/* 기타 개별 화면 */}
-        <Stack.Screen name="Main" component={Main} />
+        <Stack.Screen
+          name="Main"
+          component={Main}
+          options={{headerShown: false}}
+        />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Item_List" component={Item_List} />
         <Stack.Screen name="Chat_Main" component={Chat_Main} />
@@ -113,5 +120,13 @@ const App = () => {
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  logo: {
+    width: 120,
+    height: 40,
+    resizeMode: 'contain',
+  },
+});
 
 export default App;
