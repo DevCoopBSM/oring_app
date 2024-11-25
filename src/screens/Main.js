@@ -13,7 +13,7 @@ import Logo from './assets/logo.svg';
 import OringE from './assets/oring_text.svg';
 import Mail from './assets/mail.svg';
 import Password from './assets/password.svg';
-import {login, logout, checkToken} from './services/Auth';
+import {login, logout, checkToken} from '../services/Auth';
 
 const Index = () => {
   const navigation = useNavigation();
