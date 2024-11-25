@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="b" data-name="레이어 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.43 34">
+  <defs>
+    <style>
+      .d {
+        fill: #fff;
+        stroke-width: .55px;
+      }
+
+      .d, .e, .f {
+        stroke-linejoin: round;
+      }
+
+      .d, .e, .f, .g {
+        stroke: #231815;
+        stroke-linecap: round;
+      }
+
+      .h {
+        fill: #f3a89f;
+        stroke-width: 0px;
+      }
+
+      .e, .f {
+        stroke-width: 1.1px;
+      }
+
+      .e, .g {
+        fill: none;
+      }
+
+      .f {
+        fill: #f49e15;
+      }
+
+      .g {
+        stroke-miterlimit: 10;
+        stroke-width: 1px;
+      }
+    </style>
+  </defs>
+  <g id="c" data-name="레이어 1">
+    <g>
+      <path class="f" d="M5.05,28.32c-1.72,4.15,2.74,7.32,5.99,3.22-1.72-.38-4.21-1.52-5.99-3.22"/>
+      <path class="e" d="M8.34,4.94c-1-1.86-3.79-2.09-3.79-2.09"/>
+      <line class="e" x1="8.34" y1=".55" x2="8.74" y2="4.75"/>
+      <path class="d" d="M28.64,20.06C25.09,38.33-2.17,33.52.75,15.14,4.29-3.14,31.56,1.68,28.64,20.06Z"/>
+      <g>
+        <path class="h" d="M10.18,25.21c-.08,4.48-6.73,4.47-6.81,0,.08-4.48,6.73-4.47,6.81,0Z"/>
+        <path class="h" d="M26.02,25.21c-.08,4.48-6.73,4.47-6.81,0,.08-4.48,6.73-4.47,6.81,0Z"/>
+      </g>
+      <path class="e" d="M28.66,20.06C25.11,38.33-2.15,33.52.77,15.14,4.32-3.14,31.58,1.68,28.66,20.06Z"/>
+      <g>
+        <path class="g" d="M7.87,22.34c1.02-1.59,2.68-.75,2.68-.75"/>
+        <path class="g" d="M21.47,22.28c-1.13-1.51-2.72-.55-2.72-.55"/>
+      </g>
+    </g>
+  </g>
+</svg>

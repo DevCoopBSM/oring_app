@@ -9,10 +9,10 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Logo from './assets/logoSVG.svg';
-import oringE from './assets/logoE.png';
-import mail from './assets/mail.png';
-import password_img from './assets/password.png';
+import Logo from './assets/logo.svg';
+import OringE from './assets/oring_text.svg';
+import Mail from './assets/mail.svg';
+import Password from './assets/password.svg';
 import {login, logout, checkToken} from './services/Auth';
 
 const Index = () => {
@@ -44,7 +44,7 @@ const Index = () => {
 
       if (response.success) {
         console.log('Login successful:', response);
-        navigation.navigate('Item_List'); // 페이지 이동
+        navigation.navigate('Item_List');
       } else {
         Alert.alert('로그인 실패', '이메일 또는 비밀번호를 확인해주세요.');
       }
@@ -66,7 +66,7 @@ const Index = () => {
       <View style={styles.contain}>
         <View style={styles.logo}>
           <Logo width={33} height={33} />
-          <Image source={oringE} style={styles.logoText} />
+          <OringE width={81} height={32} />
         </View>
         <Text style={styles.welcome}>오링에 온 걸{'\n'}환영해요!</Text>
         <Text style={styles.text}>
@@ -74,7 +74,7 @@ const Index = () => {
         </Text>
         <View style={styles.input}>
           <View style={styles.inputWrapper}>
-            <Image source={mail} style={styles.icon} />
+            <Mail width={24} height={24} />
             <TextInput
               style={styles.mail}
               placeholder="이메일"
@@ -83,7 +83,7 @@ const Index = () => {
             />
           </View>
           <View style={styles.inputWrapper}>
-            <Image source={password_img} style={styles.icon} />
+            <Password width={24} height={24} />
             <TextInput
               style={styles.password}
               placeholder="비밀번호"
@@ -133,11 +133,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  logoText: {
-    width: 105,
-    height: 32,
-    marginLeft: 8,
-  },
   welcome: {
     fontSize: 22,
     color: 'white',
@@ -158,12 +153,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 8,
-  },
-  icon: {
-    position: 'absolute',
-    width: 16,
-    height: 18,
-    left: 12,
   },
   mail: {
     width: 200,
