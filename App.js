@@ -7,7 +7,7 @@ import homeIcon from './src/screens/assets/home.png';
 import itemIcon from './src/screens/assets/item.png';
 import chatIcon from './src/screens/assets/opinion.png';
 import mypageIcon from './src/screens/assets/mypage.png';
-import logo from './src/screens/assets/header_logo.png';
+import Logo from './src/screens/assets/header.svg';
 import alarm from './src/screens/assets/alarm.png';
 import Splash from './src/screens/Splash';
 import Main from './src/screens/Main';
@@ -92,7 +92,7 @@ const App = () => {
           headerTitle: () => (
             <View style={styles.imageContain}>
               <Pressable onPress={() => navigation.navigate('BottomTab')}>
-                <Image source={logo} style={styles.logo} />
+                <Logo style={styles.logo} />
               </Pressable>
               <Pressable onPress={() => navigation.navigate('Alarm')}>
                 <Image source={alarm} style={styles.alarm} />
