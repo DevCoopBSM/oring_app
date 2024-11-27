@@ -57,48 +57,25 @@ const ChatPage = () => {
     
     const setupWebSocket = async () => {
       try {
-        const token = await AsyncStorage.getItem('userToken');
-        if (!token) {
-          throw new Error('No authentication token found');
-        }
-
-        console.log('Initiating WebSocket setup');
         const client = await initializeWebSocket();
         
         if (!mounted) return;
         
-        if (client) {
-          console.log('WebSocket client created successfully');
-          setIsWebSocketReady(true);
-          
-          if (chatRoomId) {
-            subscribeToChat(chatRoomId, (receivedMessage) => {
-              if (mounted) {
-                console.log('Received message:', receivedMessage);
-                setMessages(prevMessages => [...prevMessages, {
-                  isUser: receivedMessage.userName === '박강은',
-                  text: receivedMessage.message,
-                  nickname: receivedMessage.userName
-                }]);
-              }
-            });
-          }
+        if (client && chatRoomId) {
+          subscribeToChat(chatRoomId, (receivedMessage) => {
+            if (mounted) {
+              setMessages(prevMessages => [...prevMessages, {
+                isUser: receivedMessage.userName === '박강은',
+                text: receivedMessage.message,
+                nickname: receivedMessage.userName
+              }]);
+            }
+          });
         }
       } catch (error) {
         console.error('WebSocket setup failed:', error);
         if (mounted) {
-          setIsWebSocketReady(false);
-          Alert.alert('연결 오류', '인증에 실패했습니다. 다시 로그인해주세요.', [
-            {
-              text: '확인',
-              onPress: () => {
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: 'Auth', screen: 'Login' }],
-                });
-              },
-            },
-          ]);
+          Alert.alert('연결 오류', '서버와의 연결에 실패했습니다. 다시 시도해주세요.');
         }
       }
     };

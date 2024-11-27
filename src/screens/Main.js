@@ -44,7 +44,7 @@ const Index = () => {
 
       if (response.success) {
         console.log('Login successful:', response);
-        navigation.navigate('Chat_Main'); // 페이지 이동
+        navigation.navigate('Home'); // 페이지 이동
       } else {
         Alert.alert('로그인 실패', '이메일 또는 비밀번호를 확인해주세요.');
       }
