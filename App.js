@@ -2,13 +2,17 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {View, Image, StyleSheet, Pressable} from 'react-native';
-import homeIcon from './src/screens/assets/home.png';
-import itemIcon from './src/screens/assets/item.png';
-import chatIcon from './src/screens/assets/opinion.png';
-import mypageIcon from './src/screens/assets/mypage.png';
+import {View, StyleSheet, Pressable} from 'react-native';
+import HomeIcon from './src/screens/assets/footer_home.svg';
+import ItemIcon from './src/screens/assets/footer_item.svg';
+import ChatIcon from './src/screens/assets/footer_chat.svg';
+import MypageIcon from './src/screens/assets/footer_mypage.svg';
+import HomeIcon_On from './src/screens/assets/footer_home_on.svg';
+import ItemIcon_On from './src/screens/assets/footer_item_on.svg';
+import ChatIcon_On from './src/screens/assets/footer_chat_on.svg';
+import MypageIcon_On from './src/screens/assets/footer_mypage_on.svg';
 import Logo from './src/screens/assets/header.svg';
-import alarm from './src/screens/assets/alarm.png';
+import AlarmIcon from './src/screens/assets/alarm.svg';
 import Splash from './src/screens/Splash';
 import Main from './src/screens/Main';
 import Home from './src/screens/Home';
@@ -22,6 +26,7 @@ import Chat_Main from './src/screens/Chat_Main';
 import Item_Detail from './src/screens/Item_Detail';
 import Item_Insert from './src/screens/Item_Insert';
 import Item_Insert2 from './src/screens/Item_Insert2';
+import Barcode from './src/screens/Barcode';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,32 +36,22 @@ const BottomTab = () => {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({route}) => ({
-        tabBarIcon: ({color, size}) => {
-          let iconSource;
+        tabBarIcon: ({focused, size}) => {
+          // 활성화 여부에 따라 아이콘 변경
+          let IconComponent;
 
           if (route.name === 'Home') {
-            iconSource = homeIcon;
+            IconComponent = focused ? HomeIcon_On : HomeIcon;
           } else if (route.name === 'Item_List') {
-            iconSource = itemIcon;
-          } else if (route.name === 'Chat_Main') {
-            iconSource = chatIcon;
+            IconComponent = focused ? ItemIcon_On : ItemIcon;
+          } else if (route.name === 'User_Chat') {
+            IconComponent = focused ? ChatIcon_On : ChatIcon;
           } else if (route.name === 'Mypage') {
-            iconSource = mypageIcon;
+            IconComponent = focused ? MypageIcon_On : MypageIcon;
           }
 
-          return (
-            <Image
-              source={iconSource}
-              style={{
-                width: size || 24,
-                height: size || 24,
-                tintColor: color,
-              }}
-            />
-          );
+          return <IconComponent width={size || 24} height={size || 24} />;
         },
-        tabBarActiveTintColor: '#F49E15',
-        tabBarInactiveTintColor: 'gray',
       })}>
       <Tab.Screen
         name="Home"
@@ -69,8 +64,8 @@ const BottomTab = () => {
         options={{headerShown: false, title: '상품'}}
       />
       <Tab.Screen
-        name="Chat_Main"
-        component={Chat_Main}
+        name="User_Chat"
+        component={User_Chat}
         options={{headerShown: false, title: '의견'}}
       />
       <Tab.Screen
@@ -92,10 +87,10 @@ const App = () => {
           headerTitle: () => (
             <View style={styles.imageContain}>
               <Pressable onPress={() => navigation.navigate('BottomTab')}>
-                <Logo style={styles.logo} />
+                <Logo width={120} height={40} />
               </Pressable>
               <Pressable onPress={() => navigation.navigate('Alarm')}>
-                <Image source={alarm} style={styles.alarm} />
+                <AlarmIcon width={20} height={20} />
               </Pressable>
             </View>
           ),
@@ -127,6 +122,7 @@ const App = () => {
         <Stack.Screen name="Item_Detail" component={Item_Detail} />
         <Stack.Screen name="Item_Insert" component={Item_Insert} />
         <Stack.Screen name="Item_Insert2" component={Item_Insert2} />
+        <Stack.Screen name="Barcode" component={Barcode} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -135,20 +131,9 @@ const App = () => {
 const styles = StyleSheet.create({
   imageContain: {
     flexDirection: 'row',
-    gap: 190,
-  },
-  logo: {
-    width: 120,
-    height: 40,
-    marginLeft: 15,
-    resizeMode: 'contain',
-  },
-  alarm: {
-    width: 20,
-    height: 20,
-    marginLeft: 15,
-    marginTop: 13,
-    resizeMode: 'contain',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
   },
 });
 
