@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import { addInventoryItem } from '../services/addItemAuth';
+import {addInventoryItem} from '../services/addItemAuth';
 
 const Index = ({barcode}) => {
   const navigation = useNavigation();
@@ -25,12 +25,12 @@ const Index = ({barcode}) => {
         itemCode: barcodeInput,
         itemName: productName,
         itemQuantity: quantity,
-        reason: reasonText
+        reason: reasonText,
       });
-      
+
       console.log('Success:', response);
       alert(response.results[0].message);
-      
+
       setProductName('');
       setBarcodeInput('');
       setQuantity('');

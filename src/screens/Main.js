@@ -9,11 +9,13 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Logo from './assets/logoSVG.svg';
-import oringE from './assets/logoE.png';
-import mail from './assets/mail.png';
-import password_img from './assets/password.png';
+
+import Logo from './assets/logo.svg';
+import OringE from './assets/oring_text.svg';
+import Mail from './assets/mail.svg';
+import Password from './assets/password.svg';
 import {login, logout, checkToken} from '../services/Auth';
+import Welcome from './assets/welcome.svg';
 
 const Index = () => {
   const navigation = useNavigation();
@@ -44,7 +46,7 @@ const Index = () => {
 
       if (response.success) {
         console.log('Login successful:', response);
-        navigation.navigate('Home'); // 페이지 이동
+        navigation.navigate('BottomTab');
       } else {
         Alert.alert('로그인 실패', '이메일 또는 비밀번호를 확인해주세요.');
       }
@@ -66,27 +68,29 @@ const Index = () => {
       <View style={styles.contain}>
         <View style={styles.logo}>
           <Logo width={33} height={33} />
-          <Image source={oringE} style={styles.logoText} />
+          <OringE width={81} height={32} />
         </View>
-        <Text style={styles.welcome}>오링에 온 걸{'\n'}환영해요!</Text>
+        <Welcome width={183} height={80} style={styles.welcome} />
         <Text style={styles.text}>
           로그인 후 더 다양한 기능을 누려보세요 :)
         </Text>
         <View style={styles.input}>
           <View style={styles.inputWrapper}>
-            <Image source={mail} style={styles.icon} />
+            <Mail width={20} height={20} />
             <TextInput
               style={styles.mail}
               placeholder="이메일"
+              placeholderTextColor="#999999"
               value={email}
               onChangeText={text => setEmail(text)}
             />
           </View>
           <View style={styles.inputWrapper}>
-            <Image source={password_img} style={styles.icon} />
+            <Password width={20} height={20} />
             <TextInput
               style={styles.password}
               placeholder="비밀번호"
+              placeholderTextColor="#999999"
               secureTextEntry
               value={password}
               onChangeText={text => setPassword(text)}
@@ -104,7 +108,6 @@ const Index = () => {
             {loading ? '로딩중...' : '로그인'}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.text}>이메일 찾기 | 비밀번호 찾기 | 회원가입</Text>
       </View>
     </View>
   );
@@ -132,17 +135,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  logoText: {
-    width: 105,
-    height: 32,
-    marginLeft: 8,
+    marginRight: 10,
+    marginTop: 20,
   },
   welcome: {
-    fontSize: 22,
-    color: 'white',
     marginTop: 8,
-    marginBottom: 20,
+    marginLeft: 20,
+    marginBottom: 15,
     textAlign: 'center',
   },
   text: {
@@ -157,29 +156,26 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
-  },
-  icon: {
-    position: 'absolute',
-    width: 16,
-    height: 18,
-    left: 12,
-  },
-  mail: {
-    width: 200,
-    height: 40,
-    paddingLeft: 32,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 8,
-  },
-  password: {
-    width: 200,
-    height: 40,
-    paddingLeft: 32,
     borderWidth: 1,
     borderColor: '#999999',
     borderRadius: 8,
+    width: 220,
+    height: 45,
+    paddingHorizontal: 8,
+    backgroundColor: 'white',
+    marginBottom: 12,
+  },
+  mail: {
+    flex: 1,
+    height: '100%',
+    paddingLeft: 8,
+    color: 'black',
+  },
+  password: {
+    flex: 1,
+    height: '100%',
+    paddingLeft: 8,
+    color: 'black',
   },
   login: {
     width: 220,
@@ -187,7 +183,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 10,
+    marginLeft: 8,
   },
   loginActive: {
     backgroundColor: '#F49E15',

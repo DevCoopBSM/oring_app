@@ -10,11 +10,11 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import up from './assets/up.png';
 import down from './assets/down.png';
-import { addSnapshotItem } from '../services/addItemAuth2';
+import {addSnapshotItem} from '../services/addItemAuth2';
 
 const Index = () => {
   const navigation = useNavigation();
-  const [count, setCount] = useState(''); // 상품 개수 초기 상태
+  const [count, setCount] = useState('');
   const [company, setCompany] = useState('');
   const [productName, setProductName] = useState('');
   const [explain, setExplain] = useState('');
@@ -55,7 +55,7 @@ const Index = () => {
         productName,
         explain,
         barcode,
-        quantity: count
+        quantity: count,
       });
 
       const response = await addSnapshotItem({
@@ -63,13 +63,11 @@ const Index = () => {
         productName,
         explain,
         barcode,
-        quantity: count
+        quantity: count,
       });
 
       console.log('Save successful:', response);
       alert(response.results[0].message);
-      
-      // 입력 필드 초기화
       setCompany('');
       setProductName('');
       setExplain('');
@@ -79,6 +77,15 @@ const Index = () => {
       console.error('Save failed:', error);
       alert(error.message);
     }
+  };
+
+  // 바코드 스캔 화면으로 이동하는 함수
+  const onBarcodePress = () => {
+    navigation.navigate('Barcode', {
+      onBarcodeScan: scannedBarcode => {
+        setBarcode(scannedBarcode);
+      },
+    });
   };
 
   return (
@@ -93,7 +100,6 @@ const Index = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.contain}>
-        {/* 회사명 입력 */}
         <View style={styles.textContainer}>
           <Text style={styles.text}>
             회사명<Text style={styles.color}>*</Text>
@@ -105,8 +111,6 @@ const Index = () => {
           value={company}
           onChangeText={setCompany}
         />
-
-        {/* 상품명 입력 */}
         <View style={styles.textContainer}>
           <Text style={styles.text}>
             상품명<Text style={styles.color}>*</Text>
@@ -136,12 +140,16 @@ const Index = () => {
             바코드 입력<Text style={styles.color}>*</Text>
           </Text>
         </View>
-        <TextInput
-          style={styles.input}
-          placeholder="터치 시 카메라로 전환됩니다."
-          value={barcode}
-          onChangeText={setBarcode}
-        />
+        <TouchableOpacity onPress={onBarcodePress}>
+          <TextInput
+            style={styles.input}
+            placeholder="터치 시 카메라로 전환됩니다."
+            value={barcode}
+            onChangeText={setBarcode}
+            editable={false}
+            pointerEvents="none"
+          />
+        </TouchableOpacity>
 
         {/* 상품 개수 입력 */}
         <View style={styles.textContainer}>
