@@ -7,7 +7,7 @@ const {width, height} = Dimensions.get('window');
 const Splash = ({navigation}) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('BottomTab');
+      navigation.replace('Main');
     }, 3000);
 
     return () => clearTimeout(timer);

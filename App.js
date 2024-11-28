@@ -2,7 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {View, StyleSheet, Pressable} from 'react-native';
+import {View, StyleSheet, Pressable, Text} from 'react-native';
 import HomeIcon from './src/screens/assets/footer_home.svg';
 import ItemIcon from './src/screens/assets/footer_item.svg';
 import ChatIcon from './src/screens/assets/footer_chat.svg';
@@ -27,6 +27,7 @@ import Item_Detail from './src/screens/Item_Detail';
 import Item_Insert from './src/screens/Item_Insert';
 import Item_Insert2 from './src/screens/Item_Insert2';
 import Barcode from './src/screens/Barcode';
+import Conference from './src/screens/Conference';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,20 +38,30 @@ const BottomTab = () => {
       initialRouteName="Home"
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, size}) => {
-          // 활성화 여부에 따라 아이콘 변경
           let IconComponent;
 
           if (route.name === 'Home') {
             IconComponent = focused ? HomeIcon_On : HomeIcon;
           } else if (route.name === 'Item_List') {
             IconComponent = focused ? ItemIcon_On : ItemIcon;
-          } else if (route.name === 'User_Chat') {
+          } else if (route.name === 'Conference') {
             IconComponent = focused ? ChatIcon_On : ChatIcon;
           } else if (route.name === 'Mypage') {
             IconComponent = focused ? MypageIcon_On : MypageIcon;
           }
 
-          return <IconComponent width={size || 24} height={size || 24} />;
+          return <IconComponent width={size || 22} height={size || 22} />;
+        },
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontFamily: 'NanumSquareOTF',
+          fontWeight: '700',
+        },
+        tabBarActiveTintColor: '#B9BBB9', // 활성화된 탭의 글자색 (회색)
+        tabBarInactiveTintColor: '#B9BBB9', // 비활성화된 탭의 글자색 (회색)
+        tabBarStyle: {
+          backgroundColor: '#fff',
+          height: 55,
         },
       })}>
       <Tab.Screen
@@ -60,13 +71,13 @@ const BottomTab = () => {
       />
       <Tab.Screen
         name="Item_List"
-        component={Item_List}
+        component={Item_ListStack} // 스택으로 연결
         options={{headerShown: false, title: '상품'}}
       />
       <Tab.Screen
-        name="User_Chat"
-        component={User_Chat}
-        options={{headerShown: false, title: '의견'}}
+        name="Conference"
+        component={Conference}
+        options={{headerShown: false, title: '총회'}}
       />
       <Tab.Screen
         name="Mypage"
@@ -76,28 +87,55 @@ const BottomTab = () => {
     </Tab.Navigator>
   );
 };
+const Item_ListStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Item_List"
+        component={Item_List}
+        options={{headerShown: false}} // Header 숨기기
+      />
+    </Stack.Navigator>
+  );
+};
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Splash"
-        screenOptions={({navigation}) => ({
+        screenOptions={({navigation, route}) => ({
           headerShown: true,
-          headerTitle: () => (
-            <View style={styles.imageContain}>
-              <Pressable onPress={() => navigation.navigate('BottomTab')}>
-                <Logo width={120} height={40} />
-              </Pressable>
-              <Pressable onPress={() => navigation.navigate('Alarm')}>
-                <AlarmIcon width={20} height={20} />
-              </Pressable>
-            </View>
-          ),
-          headerTitleAlign: 'left',
-          headerStyle: {
-            backgroundColor: 'white',
+          headerTitle: () => {
+            // Item_List에서는 재고추가 버튼만 보이고 다른 화면에서는 알림 아이콘
+            if (route.name === 'Item_List') {
+              return (
+                <View style={styles.imageContain}>
+                  <Pressable onPress={() => navigation.navigate('BottomTab')}>
+                    <Logo width={120} height={40} />
+                  </Pressable>
+                  <Pressable
+                    style={styles.addButton}
+                    onPress={() => navigation.navigate('Item_Insert')}>
+                    <Text style={styles.addButtonText}>재고추가</Text>
+                  </Pressable>
+                </View>
+              );
+            } else {
+              return (
+                <View style={styles.imageContain}>
+                  <Pressable onPress={() => navigation.navigate('BottomTab')}>
+                    <Logo width={120} height={40} />
+                  </Pressable>
+                  <Pressable onPress={() => navigation.navigate('Alarm')}>
+                    <AlarmIcon width={20} height={20} />
+                  </Pressable>
+                </View>
+              );
+            }
           },
+          headerTitleAlign: 'left',
+          headerStyle: {backgroundColor: 'white'},
           headerBackVisible: false,
         })}>
         <Stack.Screen
@@ -115,6 +153,7 @@ const App = () => {
         <Stack.Screen name="Item_List" component={Item_List} />
         <Stack.Screen name="Chat_Main" component={Chat_Main} />
         <Stack.Screen name="User_Chat" component={User_Chat} />
+        <Stack.Screen name="Conference" component={Conference} />
         <Stack.Screen name="Manager_Chat" component={Manager_Chat} />
         <Stack.Screen name="Alarm" component={Alarm} />
         <Stack.Screen name="Charge" component={Charge} />
@@ -134,6 +173,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 15,
+  },
+  addButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    backgroundColor: '#F49E15',
+    borderRadius: 5,
+  },
+  addButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  notificationIcon: {
+    fontSize: 20,
+    color: '#F49E15',
   },
 });
 

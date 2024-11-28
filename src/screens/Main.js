@@ -13,7 +13,8 @@ import Logo from './assets/logo.svg';
 import OringE from './assets/oring_text.svg';
 import Mail from './assets/mail.svg';
 import Password from './assets/password.svg';
-import {login, logout, checkToken} from '../services/Auth';
+import {login} from '../services/Auth';
+import Welcome from './assets/welcome.svg';
 
 const Index = () => {
   const navigation = useNavigation();
@@ -68,25 +69,27 @@ const Index = () => {
           <Logo width={33} height={33} />
           <OringE width={81} height={32} />
         </View>
-        <Text style={styles.welcome}>오링에 온 걸{'\n'}환영해요!</Text>
+        <Welcome width={183} height={80} style={styles.welcome} />
         <Text style={styles.text}>
           로그인 후 더 다양한 기능을 누려보세요 :)
         </Text>
         <View style={styles.input}>
           <View style={styles.inputWrapper}>
-            <Mail width={24} height={24} />
+            <Mail width={20} height={20} />
             <TextInput
               style={styles.mail}
               placeholder="이메일"
+              placeholderTextColor="#999999"
               value={email}
               onChangeText={text => setEmail(text)}
             />
           </View>
           <View style={styles.inputWrapper}>
-            <Password width={24} height={24} />
+            <Password width={20} height={20} />
             <TextInput
               style={styles.password}
               placeholder="비밀번호"
+              placeholderTextColor="#999999"
               secureTextEntry
               value={password}
               onChangeText={text => setPassword(text)}
@@ -104,7 +107,6 @@ const Index = () => {
             {loading ? '로딩중...' : '로그인'}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.text}>이메일 찾기 | 비밀번호 찾기 | 회원가입</Text>
       </View>
     </View>
   );
@@ -132,12 +134,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 10,
+    marginTop: 20,
   },
   welcome: {
-    fontSize: 22,
-    color: 'white',
     marginTop: 8,
-    marginBottom: 20,
+    marginLeft: 20,
+    marginBottom: 15,
     textAlign: 'center',
   },
   text: {
@@ -152,23 +155,26 @@ const styles = StyleSheet.create({
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
-  },
-  mail: {
-    width: 200,
-    height: 40,
-    paddingLeft: 32,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 8,
-  },
-  password: {
-    width: 200,
-    height: 40,
-    paddingLeft: 32,
     borderWidth: 1,
     borderColor: '#999999',
     borderRadius: 8,
+    width: 220,
+    height: 45,
+    paddingHorizontal: 8,
+    backgroundColor: 'white',
+    marginBottom: 12,
+  },
+  mail: {
+    flex: 1,
+    height: '100%',
+    paddingLeft: 8,
+    color: 'black',
+  },
+  password: {
+    flex: 1,
+    height: '100%',
+    paddingLeft: 8,
+    color: 'black',
   },
   login: {
     width: 220,
@@ -176,7 +182,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 10,
+    marginLeft: 8,
   },
   loginActive: {
     backgroundColor: '#F49E15',
