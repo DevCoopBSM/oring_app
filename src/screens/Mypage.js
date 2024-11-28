@@ -1,18 +1,18 @@
 import React from 'react';
-import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Logo from './assets/logoSVG.svg';
-import setting from './assets/setting.png';
-import conferencse from './assets/conference.png';
-import refund from './assets/refund.png';
-import help from './assets/help.png';
-import arrow from './assets/arrow2.png';
+import SettingIcon from './assets/setting.svg';
+import ConferenceIcon from './assets/conference.svg';
+import RefundIcon from './assets/refund.svg';
+import HelpIcon from './assets/help.svg';
+import ArrowIcon from './assets/arrow2.svg';
 
 const Index = () => {
   const navigation = useNavigation();
 
   const onConference = () => {
-    navigation.navigate('Main');
+    navigation.navigate('start');
   };
 
   return (
@@ -21,24 +21,24 @@ const Index = () => {
       <Text style={styles.userName}>박강은</Text>
       <View style={styles.listBox}>
         <TouchableOpacity style={styles.box}>
-          <Image source={setting} style={styles.listIcon} />
+          <SettingIcon width={16} height={16} style={styles.listIcon} />
           <Text style={styles.listText}>정보 수정</Text>
-          <Image source={arrow} style={styles.arrow} />
+          <ArrowIcon width={8} height={16} style={styles.arrow} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.box} onPress={onConference}>
-          <Image source={conference} style={styles.listIcon} />
+          <ConferenceIcon width={16} height={16} style={styles.listIcon} />
           <Text style={styles.listText}>총회</Text>
-          <Image source={arrow} style={styles.arrow} />
+          <ArrowIcon width={8} height={16} style={styles.arrow} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.box}>
-          <Image source={refund} style={styles.listIcon} />
+          <RefundIcon width={16} height={16} style={styles.listIcon} />
           <Text style={styles.listText}>환불 / 반품 목록</Text>
-          <Image source={arrow} style={styles.arrow} />
+          <ArrowIcon width={8} height={16} style={styles.arrow} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.box}>
-          <Image source={help} style={styles.listIcon} />
+          <HelpIcon width={16} height={16} style={styles.listIcon} />
           <Text style={styles.listText}>고객 센터</Text>
-          <Image source={arrow} style={styles.arrow} />
+          <ArrowIcon width={8} height={16} style={styles.arrow} />
         </TouchableOpacity>
       </View>
       <Text style={styles.Copyright}>
@@ -56,21 +56,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   profile: {
-    width: 80,
-    height: 100,
-    marginTop: 50,
+    marginTop: 10,
   },
   userName: {
     fontSize: 24,
     fontFamily: 'NanumSquareEB',
-    fontWeight: 800,
-    paddingTop: 25,
+    fontWeight: '800',
+    paddingTop: 18,
   },
   listBox: {
     flexDirection: 'column',
     paddingLeft: 32,
     paddingTop: 30,
-    paddingBottom: 128,
+    paddingBottom: 70,
     gap: 8,
   },
   box: {
@@ -81,8 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   listIcon: {
-    width: 12,
-    height: 12,
+    marginLeft: 10,
   },
   listText: {
     fontSize: 12,
@@ -91,14 +88,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   arrow: {
-    width: 4,
-    height: 8,
     marginRight: 30,
   },
   Copyright: {
     color: '#999999',
     fontSize: 10,
-    marginBottom: 20,
   },
 });
 
