@@ -14,19 +14,23 @@ import defaultImage from './assets/items/picnic_red.jpg';
 
 const Index = () => {
   const navigation = useNavigation();
-  const menuItems = ['전체', '과자', '아이스크림', '음료','냉동식품', '빵류', '식품', '기타'];
+  const menuItems = ['전체', '과자', '아이스크림', '음료', '냉동식품', '빵류', '식품', '기타'];
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const mapCategory = category => {
+    return category === '기타' ? '잡화' : category;
+  };
+
   const fetchItems = async category => {
     setLoading(true);
     try {
+      const mappedCategory = mapCategory(category);
       const response =
-        category === '전체'
+        mappedCategory === '전체'
           ? await getAllItems()
-          : await getCategoryItems(category);
-
+          : await getCategoryItems(mappedCategory);
       if (response && response.itemList) {
         setItems(response.itemList);
       } else {

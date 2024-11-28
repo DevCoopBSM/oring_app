@@ -9,11 +9,12 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+
 import Logo from './assets/logo.svg';
 import OringE from './assets/oring_text.svg';
 import Mail from './assets/mail.svg';
 import Password from './assets/password.svg';
-import {login} from '../services/Auth';
+import {login, logout, checkToken} from '../services/Auth';
 import Welcome from './assets/welcome.svg';
 
 const Index = () => {
