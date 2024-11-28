@@ -9,6 +9,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import arrow from './assets/arrow.png';
@@ -17,12 +18,17 @@ import send_off from './assets/send_off.png';
 import send_on from './assets/send_on.png';
 import chat_plus from './assets/chat_plus.png';
 import happyoring from './assets/happyoring.png';
+import { initializeWebSocket, subscribeToChat, sendMessage, disconnect, resetChatState, getChatRoomInfo, reconnectWebSocket, validateToken } from '../services/ChatService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ChatPage = () => {
   const navigation = useNavigation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const [chatRoomId, setChatRoomId] = useState(null);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [isWebSocketReady, setIsWebSocketReady] = useState(false);
 
   const onBack = () => {
     navigation.goBack();
@@ -41,40 +47,129 @@ const ChatPage = () => {
         text: `안녕하세요 매점 아리소리입니다! 문의 확인은 매점부원들이 휴대폰을 공식적으로 되찾는 오후 4시 반 이후부터 가능합니다.`,
       },
     ]);
-  };
-
-  const handleSendMessage = () => {
-    if (inputValue.trim()) {
-      setMessages(prevMessages => [
-        ...prevMessages,
-        {text: inputValue, isUser: true},
-      ]);
-      setInputValue('');
-
-      setTimeout(() => {
-        setMessages(prevMessages => [
-          ...prevMessages,
-          {
-            isUser: false,
-            profilePic: happyoring,
-            nickname: '매점부 박강은',
-            text: '내일 오후 3시에 입고될 예정입니다',
-          },
-        ]);
-      }, 3000);
-    }
+    setChatRoomId(null);
+    resetChatState();
+    setIsOpen(false);
   };
 
   useEffect(() => {
-    setMessages([
-      {
-        isUser: false,
-        profilePic: happyoring,
-        nickname: '공간 AriSori',
-        text: `안녕하세요 매점 아리소리입니다! 문의 확인은 매점부원들이 휴대폰을 공식적으로 되찾는 오후 4시 반 이후부터 가능합니다.`,
-      },
-    ]);
-  }, []);
+    let mounted = true;
+    
+    const setupWebSocket = async () => {
+      try {
+        const client = await initializeWebSocket();
+        
+        if (!mounted) return;
+        
+        if (client && chatRoomId) {
+          subscribeToChat(chatRoomId, (receivedMessage) => {
+            if (mounted) {
+              setMessages(prevMessages => [...prevMessages, {
+                isUser: receivedMessage.userName === '박강은',
+                text: receivedMessage.message,
+                nickname: receivedMessage.userName
+              }]);
+            }
+          });
+        }
+      } catch (error) {
+        console.error('WebSocket setup failed:', error);
+        if (mounted) {
+          Alert.alert('연결 오류', '서버와의 연결에 실패했습니다. 다시 시도해주세요.');
+        }
+      }
+    };
+
+    setupWebSocket();
+
+    return () => {
+      mounted = false;
+      disconnect();
+    };
+  }, [chatRoomId]);
+
+  const handleSendMessage = async () => {
+    if (!inputValue.trim()) return;
+
+    let retryCount = 0;
+    const maxRetries = 3;
+
+    while (retryCount < maxRetries) {
+      try {
+        if (!isWebSocketReady) {
+          console.log('WebSocket not ready, attempting to reconnect...');
+          const client = await reconnectWebSocket();
+          if (client) {
+            setIsWebSocketReady(true);
+          }
+        }
+
+        console.log('Attempting to send message:', inputValue);
+        const result = await sendMessage(inputValue, chatRoomId);
+        
+        // 메시지 전송 성공 처리
+        setMessages(prevMessages => [
+          ...prevMessages,
+          {
+            text: inputValue,
+            isUser: true,
+            nickname: '박강은'
+          }
+        ]);
+        setInputValue('');
+        break;
+      } catch (error) {
+        console.error('Send message error:', error);
+        retryCount++;
+        if (retryCount === maxRetries) {
+          Alert.alert('전송 오류', '메시지 전송에 실패했습니다. 다시 시도해주세요.');
+        }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    }
+  };
+
+  // messageSet을 처리하는 함수 추가
+  const processMessageSet = (messageSet) => {
+    if (!messageSet) return;
+    
+    const newMessages = messageSet.map(msg => ({
+      isUser: msg.userName === '박강은',
+      text: msg.message,
+      nickname: msg.userName,
+      messageTime: msg.messageTime
+    }));
+    
+    setMessages(prevMessages => [...prevMessages, ...newMessages]);
+  };
+
+  useEffect(() => {
+    if (chatRoomId) {
+      // 채팅방 메시지 히스토리 가져오기
+      const fetchMessageHistory = async () => {
+        try {
+          const chatRoomInfo = await getChatRoomInfo();
+          if (chatRoomInfo.messageSet) {
+            processMessageSet(chatRoomInfo.messageSet);
+          }
+        } catch (error) {
+          console.error('Error fetching message history:', error);
+        }
+      };
+      
+      fetchMessageHistory();
+    }
+  }, [chatRoomId]);
+
+  // 채팅 기록을 날짜별로 그룹화하는 함수
+  const groupedHistory = chatHistory.reduce((acc, chat) => {
+    const dateStr = chat.date.toLocaleDateString();
+    if (!acc[dateStr]) {
+      acc[dateStr] = [];
+    }
+    acc[dateStr].push(chat);
+    return acc;
+  }, {});
 
   return (
     <TouchableWithoutFeedback onPress={() => setIsOpen(false)}>
