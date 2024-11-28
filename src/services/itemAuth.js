@@ -131,4 +131,44 @@ export const getCategoryItems = async (category) => {
     }
     throw new Error('카테고리 상품을 불러오는데 실패했습니다.');
   }
+};
+
+// 특정 아이템 세부 정보 조회
+export const getItemDetails = async (itemId) => {
+  try {
+    const token = await getToken();
+    if (!token) {
+      throw new Error('접근 권한이 없습니다. 다시 로그인해주세요.');
+    }
+
+    const response = await api.get(`/api/item/info/${itemId}`);
+    console.log('Item details response:', response.data);
+
+    const itemInfo = response.data.itemInfo || {}; // 기본값으로 빈 객체 사용
+    if (!itemInfo.itemId) {
+      throw new Error('아이템 정보를 받아오지 못했습니다.');
+    }
+
+    return {
+      itemId: itemInfo.itemId,
+      itemCode: itemInfo.itemCode,
+      itemImage: itemInfo.itemImage ? `data:image/jpeg;base64,${itemInfo.itemImage}` : require('../screens/assets/items/picnic_red.jpg'), // 대체 이미지
+      itemName: itemInfo.itemName,
+      itemExplain: itemInfo.itemExplain,
+      itemCategory: itemInfo.itemCategory,
+      itemPrice: itemInfo.itemPrice,
+      itemQuantity: itemInfo.itemQuantity,
+    };
+  } catch (error) {
+    console.error('Get item details error:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+    });
+    
+    if (error.response?.status === 403) {
+      throw new Error('접근 권한이 없습니다. 다시 로그인해주세요.');
+    }
+    throw new Error('아이템 세부 정보를 불러오는데 실패했습니다.');
+  }
 }; 

@@ -1,40 +1,61 @@
-import React from 'react';
-import {Image, View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import styled from 'styled-components/native';
-import {useNavigation} from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { getItemDetails } from '../services/itemDetails'; // itemDetails에서 가져오기
+import { fetchRecommendedProducts } from '../services/ProductService'; // 추천 상품 가져오기
 import detail_arrow from './assets/back.png';
 import detail_fix from './assets/fix.png';
-import picnic_red from './assets/items/picnic_red.jpg';
-import picnic_green from './assets/items/picnic_green.jpg';
-import meat from './assets/items/meat.jpg';
-import kimchi from './assets/items/kimchi.jpg';
-import worldcon_red from './assets/items/worldcon_red.png';
-import worldcon_blue from './assets/items/worldcon_blue.png';
-import alloa from './assets/items/alloa.jpg';
-import con from './assets/items/99con.jpg';
-import supercon_red from './assets/items/supercon_red.jpg';
-import {Shadow} from 'react-native-shadow-2';
+import defaultImage from './assets/items/picnic_red.jpg'; // 대체 이미지
 
-const Index = () => {
+const ItemDetail = () => {
+  const route = useRoute();
   const navigation = useNavigation();
-  const menuItems = [
-    {name: '매일_피크닛_사과맛', img: picnic_red, price: 700, num: 50},
-    {name: '웅진_가야농장_알로에', img: alloa, price: 1300, num: 38},
-    {name: '롯데_월드콘_쿠앤크맛', img: worldcon_blue, price: 1400, num: 13},
-    {name: '롯데_구구콘_오리지널', img: con, price: 1400, num: 7},
-    {name: '빙그레_슈퍼콘_초코맛', img: supercon_red, price: 1400, num: 15},
-    {name: '롯데_월드콘_바닐라맛', img: worldcon_red, price: 1400, num: 10},
-    {name: '사조_고기포자만두', img: meat, price: 2000, num: 20},
-    {name: '사조_김치포자만두', img: kimchi, price: 2000, num: 22},
-  ];
+  const { itemId } = route.params; // 아이템 ID를 route에서 가져옴
+  const [itemDetails, setItemDetails] = useState(null);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchItemDetails = async () => {
+      try {
+        const details = await getItemDetails(itemId); // itemDetails의 getItemDetails 호출
+        setItemDetails(details);
+      } catch (error) {
+        console.error('Error fetching item details:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchRecommendedProductsData = async () => {
+      try {
+        const products = await fetchRecommendedProducts(); // 추천 상품 가져오기
+        setRecommendedProducts(products);
+      } catch (error) {
+        console.error('Error fetching recommended products:', error);
+      }
+    };
+
+    fetchItemDetails();
+    fetchRecommendedProductsData();
+  }, [itemId]);
+
+  const onBack = () => {
+    navigation.goBack();
+  };
 
   const onFix = () => {
     navigation.navigate('Item_Insert');
   };
 
-  const onBack = () => {
-    navigation.goBack(-1);
-  };
+  if (loading) {
+    return <Text>로딩 중...</Text>; // 로딩 상태 표시
+  }
+
+  if (!itemDetails) {
+    return <Text>아이템 정보를 불러오지 못했습니다.</Text>; // 에러 처리
+  }
 
   return (
     <Container>
@@ -46,39 +67,43 @@ const Index = () => {
           <Fix source={detail_fix} />
         </TouchableOpacity>
       </Icon>
-      <ItemImg source={picnic_green} />
+      <ItemImg source={itemDetails.itemImage ? { uri: itemDetails.itemImage } : defaultImage} />
       <DetailBox>
         <Contain>
-          <ItemName>매일_피크닉_청포도맛</ItemName>
-          <ItemPrice>700원</ItemPrice>
-          <Inventory>제품 제고</Inventory>
+          <ItemName>{itemDetails.itemName}</ItemName>
+          <ItemPrice>{itemDetails.itemPrice.toLocaleString()}원</ItemPrice>
+          <Inventory>재고</Inventory>
           <ItemInventory>
-            <Num>48개 </Num>
+            <Num>{itemDetails.itemQuantity}개</Num>
             <Date>· 2024.07.09 기준</Date>
           </ItemInventory>
         </Contain>
       </DetailBox>
       <RecommendBox>
-        <RecommedText>비슷한 다른 메뉴를 추천해드릴게요! 🥰</RecommedText>
+        <RecommedText>오늘의 추천 상품이에요! 🥰</RecommedText>
         <MenuList horizontal showsHorizontalScrollIndicator={false}>
-          {menuItems.map((item, index) => (
-     
-              <MenuBox key={index}>
-                <MenuImg source={item.img} />
-                <MenuItem>{item.name}</MenuItem>
+          <FlatList
+            data={recommendedProducts}
+            keyExtractor={item => item.itemId.toString()}
+            renderItem={({ item }) => (
+              <MenuBox>
+                <MenuImg source={{ uri: item.itemImage }} />
+                <MenuItem>{item.itemName}</MenuItem>
                 <MenuPrice>
-                  {item.price.toLocaleString()}원 | {item.num} 개
+                  {item.itemPrice.toLocaleString()}원 | {item.itemQuantity} 개
                 </MenuPrice>
               </MenuBox>
- 
-          ))}
+            )}
+            horizontal
+            style={{ paddingLeft: 15, marginTop: 15 }}
+          />
         </MenuList>
       </RecommendBox>
     </Container>
   );
 };
 
-export default Index;
+export default ItemDetail;
 
 const Container = styled.View`
   flex: 1;
@@ -91,7 +116,8 @@ const Icon = styled.View`
   margin-top: 20px;
   flex-direction: row;
   justify-content: space-between;
-  gap: 300px;
+  width: 100%;
+  padding: 0 20px;
 `;
 
 const Arrow = styled.Image`
@@ -113,6 +139,8 @@ const ItemImg = styled.Image`
 
 const DetailBox = styled.View`
   background-color: white;
+  padding: 20px;
+  width: 100%;
 `;
 
 const Contain = styled.View`
@@ -157,24 +185,22 @@ const Date = styled.Text`
 
 const RecommendBox = styled.View`
   width: 100%;
-  height: 469px;
   background-color: white;
+  padding: 20px;
 `;
 
 const RecommedText = styled.Text`
-  font-size: 14px;
-  margin-top: 20px;
-  text-align: left;
-  padding-left: 20px;
   font-size: 16px;
   font-weight: 900;
   font-family: 'NanumSquareEB';
+  margin-bottom: 10px;
 `;
 
-const MenuList = styled.ScrollView`
+const MenuList = styled.View`
   padding-left: 15px;
   margin-top: 15px;
 `;
+
 const MenuBox = styled.View`
   width: 120px;
   height: 160px;
@@ -182,14 +208,6 @@ const MenuBox = styled.View`
   background-color: white;
   margin-right: 10px;
   align-items: center;
-
-  ${Platform.OS === 'ios' && `
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
-  `}
-
-  ${Platform.OS === 'android' && `
-    elevation: 5;
-  `}
 `;
 
 const MenuImg = styled.Image`
