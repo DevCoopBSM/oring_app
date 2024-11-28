@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {getAllItems, getCategoryItems} from '../services/itemAuth';
+import {getAllItems, getCategoryItems, getItemDetails} from '../services/itemAuth';
 import defaultImage from './assets/items/picnic_red.jpg';
 
 const Index = () => {
@@ -56,8 +56,12 @@ const Index = () => {
     fetchItems(selectedCategory);
   }, [selectedCategory]);
 
-  const onDetail = itemId => {
-    navigation.navigate('Item_Detail', {itemId});
+  const onDetail = async itemId => {
+    try {
+      navigation.navigate('Item_Detail', { itemId });
+    } catch (error) {
+      Alert.alert('오류', error.message);
+    }
   };
 
   return (
